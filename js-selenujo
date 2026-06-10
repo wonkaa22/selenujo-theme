@@ -172,21 +172,22 @@
       if (!title) return;
       if (title.textContent.indexOf('Administration') === -1) return;
 
-      // Marquer la catégorie
       cat.classList.add('sel-admin');
 
-      // Vider les forums générés par FA et injecter notre template custom
       var forumsContainer = cat.querySelector('.forums');
       if (!forumsContainer) return;
 
-      // On garde les forums FA cachés (pour les liens internes) mais on injecte le template visuel
+      // Sauvegarder le contenu FA original (liens fonctionnels)
       var existing = forumsContainer.innerHTML;
       forumsContainer.innerHTML = '';
 
-      var clone = document.importNode(tpl.content, true);
+      // Cloner le contenu du div masqué (pas de .content comme sur <template>)
+      var clone = tpl.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.style.display = '';
       forumsContainer.appendChild(clone);
 
-      // Réinjecter les forums FA originaux, invisibles, pour les fonctionnalités FA
+      // Réinjecter les forums FA originaux masqués
       var hiddenContainer = document.createElement('div');
       hiddenContainer.style.display = 'none';
       hiddenContainer.innerHTML = existing;
@@ -216,7 +217,9 @@
       var existing = forumsContainer.innerHTML;
       forumsContainer.innerHTML = '';
 
-      var clone = document.importNode(tpl.content, true);
+      var clone = tpl.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.style.display = '';
       forumsContainer.appendChild(clone);
 
       var hiddenContainer = document.createElement('div');
